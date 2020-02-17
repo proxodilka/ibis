@@ -409,6 +409,15 @@ def _cross_join(translator, expr):
     return translator.translate(left.join(right, ibis.literal(True)))
 
 
+def _ifnull_workaround(translator, expr):
+    col_expr, value_expr = expr.op().args
+    col_name = translator.translate(col_expr)
+    value = translator.translate(value_expr)
+    return 'CASE WHEN {} IS NULL THEN {} ELSE {} END'.format(
+        col_name, value, col_name
+    )
+
+
 def literal(translator, expr: ibis.expr.operations.Literal) -> str:
     """Create a translator for literal operations.
 
@@ -926,6 +935,7 @@ _general_ops = {
     ops.Where: _where,
     ops.TableColumn: _table_column,
     ops.CrossJoin: _cross_join,
+    ops.IfNull: _ifnull_workaround,
 }
 
 # WINDOW
@@ -965,7 +975,6 @@ _unsupported_ops = [
     ops.NullIfZero,
     ops.IsInf,
     ops.IsNan,
-    ops.IfNull,
     # string
     ops.Lowercase,
     ops.Uppercase,
