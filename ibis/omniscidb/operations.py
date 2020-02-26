@@ -940,6 +940,7 @@ _general_ops = {
     ops.TableColumn: _table_column,
     ops.CrossJoin: _cross_join,
     ops.IfNull: _ifnull_workaround,
+    ops.NullIf: fixed_arity('nullif', 2),
 }
 
 # WINDOW
@@ -975,7 +976,6 @@ _unsupported_ops = [
     ops.NTile,
     ops.NthValue,
     ops.GroupConcat,
-    ops.NullIf,
     ops.NullIfZero,
     ops.IsInf,
     ops.IsNan,
