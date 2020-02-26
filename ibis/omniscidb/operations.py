@@ -1012,6 +1012,7 @@ _general_ops = {
     ops.CrossJoin: _cross_join,
     ops.NullIf: fixed_arity('nullif', 2),
     ops.IfNull: _ifnull_workaround,
+    ops.NullIf: fixed_arity('nullif', 2),
 }
 
 # WINDOW
