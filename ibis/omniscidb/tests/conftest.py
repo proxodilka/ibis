@@ -37,7 +37,14 @@ def con():
 
 
 @pytest.fixture(scope='function')
-def test_table(con):
+def test_schema():
+    return ibis.schema(
+        [('a', 'polygon'), ('b', 'point'), ('c', 'int8'), ('d', 'double')]
+    )
+
+
+@pytest.fixture(scope='function')
+def test_table(con, test_schema):
     """
     Define fixture for test table.
 
@@ -48,9 +55,7 @@ def test_table(con):
     table_name = 'test_table'
     con.drop_table(table_name, force=True)
 
-    schema = ibis.schema(
-        [('a', 'polygon'), ('b', 'point'), ('c', 'int8'), ('d', 'double')]
-    )
+    schema = test_schema
     con.create_table(table_name, schema=schema)
 
     yield con.table(table_name)
@@ -170,7 +175,6 @@ def temp_table(con) -> str:
     try:
         yield name
     finally:
-        #assert con.exists_table(name), name
         con.drop_table(name, force=True)
 
 

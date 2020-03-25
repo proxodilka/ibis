@@ -316,26 +316,13 @@ def test_cpu_execution_type(
 @pytest.mark.parametrize(
     'force', [False, True]
 )
-def test_drop_table(con, temp_table, force):
-    schema = ibis.schema(
-        [
-            ('bool_col', 'bool'),
-            ('smallint_col', 'int16'),
-            ('int_col', 'int32'),
-            ('bigint_col', 'int64'),
-            ('float_col', 'float32'),
-            ('double_col', 'double'),
-            ('string_col', 'string'),
-            ('timestamp_col', 'timestamp'),
-        ]
-    )
-
+def test_drop_table(con, temp_table, test_schema, force):
     try:
         con.drop_table(temp_table, force=force)
     except:
         assert not force
     
-    con.create_table(temp_table, schema=schema)
+    con.create_table(temp_table, schema=test_schema)
     assert con.exists_table(temp_table)
     con.drop_table(temp_table, force=force)
     assert not con.exists_table(temp_table)
