@@ -170,7 +170,7 @@ def temp_table(con) -> str:
     try:
         yield name
     finally:
-        assert con.exists_table(name), name
+        #assert con.exists_table(name), name
         con.drop_table(name, force=True)
 
 
