@@ -149,7 +149,7 @@ def temp_table(con) -> str:
         yield name
     finally:
         assert con.exists_table(name), name
-        con.drop_table(name)
+        con.drop_table(name, force=True)
 
 
 @pytest.fixture(scope='session')

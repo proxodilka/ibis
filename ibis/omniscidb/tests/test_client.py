@@ -1,3 +1,7 @@
+import sys
+
+sys.path.append("C:\\Users\\dchigare\\Desktop\\REPOS\\ibis")
+
 import pathlib
 from typing import Optional
 
@@ -266,3 +270,36 @@ def test_cpu_execution_type(
 
     for mocked_method in mocked_methods:
         mocked_method.stop()
+
+
+@pytest.mark.parametrize(
+    'force', [False, True]
+)
+def test_drop_table(con, temp_table, force):
+    schema = ibis.schema(
+        [
+            ('bool_col', 'bool'),
+            ('smallint_col', 'int16'),
+            ('int_col', 'int32'),
+            ('bigint_col', 'int64'),
+            ('float_col', 'float32'),
+            ('double_col', 'double'),
+            ('string_col', 'string'),
+            ('timestamp_col', 'timestamp'),
+        ]
+    )
+
+    try:
+        con.drop_table(temp_table, force=force)
+    except:
+        assert not force
+    
+    con.create_table(temp_table, schema=schema)
+    assert con.exists_table(temp_table)
+    con.drop_table(temp_table, force=force)
+    assert not con.exists_table(temp_table)
+
+
+
+
+
