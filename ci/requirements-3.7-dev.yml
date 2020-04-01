@@ -57,3 +57,4 @@ dependencies:
     # we should try using isort release that will be next after 4.3.21-2
     - git+https://github.com/timothycrosley/isort@18ad293fc9d1852776afe35015a932b68d26fb14#egg=isort
     - git+https://github.com/intel-go/pymapd@develop#egg=pymapd
+    - hiyapyco # we need it now for our CI scripts
